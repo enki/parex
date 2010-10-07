@@ -1,0 +1,32 @@
+# parex - Parallel Execution for Python
+# (c) 2010 by Paul Bohm http://paulbohm.com/
+# MIT License.
+#
+# Execute multiple processes in parallel and then wait for all to finish.
+# I use this for faster deployment with fabric, so commands don't block.
+# For best results combine with SSH multiplexing (ControlMaster).
+#
+# Usage (Standalone):
+#   x = TaskManager(cwd=".")
+#   x.execute('ls') # execute commands
+#   x.execute('ps auxw')
+#   pid = x.execute('who') # returns pid
+#   x.wait() # wait till all have finished
+#   for y in x.data.values(): # keyed by pid
+#      print y.getvalue() # y is StringIO
+#
+# Also integrates nicely with fabric. Instead of doing blocking
+#   with cd("foo/bar"):
+#     run('python bbqctl.py daemon fanoutserver')
+#     run('python bbqctl.py daemon main')
+#     run('python bbqctl.py daemon twitresolve')
+#     run('python bbqctl.py daemon rssparse')
+# on the fabric client. Just do
+#   x = TaskManager("foo/bar")
+#   x.execute('python bbqctl.py daemon fanoutserver')
+#   x.execute('python bbqctl.py daemon main')
+#   x.execute('python bbqctl.py daemon twitresolve')
+#   x.execute('python bbqctl.py daemon rssparse')
+#   x.wait()
+# on the server. You can use fabric to make the server run your code.
+#
